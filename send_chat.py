@@ -7,12 +7,7 @@ class SendChat:
         if room == '':
           username = input("Input your new username : ")
           db = Database(f"room_{str(uuid4())}")
-          message = input("Input your message : ")
-          data = {
-            "username" : username,
-            "message" : message
-          }
-          db.add(data)
+          self.loop(db, username)
         else:
             # Sample ID: 42e36725-081f-4b32-ab7e-6e904ca66ec9
           db = Database()
@@ -21,21 +16,25 @@ class SendChat:
             print("Not Found")
             return
           else:
-            inp_user = input("Input username : ")
-            inp_msg = input("Input your msg : ")
             db = Database(f"room_{str(result)}")
-            data = {
-              "username" : inp_user, 
-              "message" : inp_msg,
-            }
-            db.add(data)
-            print(data)
-          # print(result)
-          
-        
-      
-        # Bikin loop yang bisa mengirim setiap chat
-        
-        
+            
+            inp_user = input("Input username : ")
+            self.loop(db, inp_user)
+    
+    def loop(self, db: Database, username: str):
+        while True:
+          inp_msg = input("Input your message : ")
+          data = {
+            "username" : username,
+            "message" : inp_msg
+          }
+          db.add(data)
+          inp_option = input("Want to send message again ? Y / N")
+          inp_option = inp_option.lower()
+          if inp_option == 'n':
+            break
+ 
 s = SendChat()
-s.execute()
+
+while True:
+  s.execute()
